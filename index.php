@@ -3,7 +3,7 @@ include("layout/header.php");
 $day = date("m-Y", strtotime(date("Y-m-d")));
 $endday =  date("t", strtotime(date("Y-m-d")));
 $startday =  date("Y-m-01", strtotime(date("Y-m-d")));
-$user_id = $_SESSION['id'];
+$user_id = @$_SESSION['id'];
 $output = "";
 $total_time  = 0;
 $total_ot  = 0;
@@ -70,7 +70,10 @@ function update_time(day,month,year,user_id)
 }
 
 </script>
-
+<?php
+if($user_id != "")
+{	
+?>
 <div class="content-wrapper" style="min-height: 916px;">
 	<section class="content-header">
 	<h1>Đăng Ký Giờ Làm</h1>
@@ -245,5 +248,6 @@ function update_time(day,month,year,user_id)
 	</div>
 </div>
 <?php
+}
 include("layout/footer.php");
 ?>

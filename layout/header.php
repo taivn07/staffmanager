@@ -320,7 +320,7 @@ $(document).ready(function()
 						<img src="<?php echo $row1['image'] ?>" class="img-circle" alt="User Image">
 					</div>
 				<?php					
-				echo "<div class='pull-left info'><p><a class='info' href='info.php'>".$row1['user_name']."</a>,<a class='logout' href='?action=logout'>Thoát</a></p></div>";
+				echo "<div class='pull-left info'><p><a class='info' href='info.php'>".$row1['user_name']."</a></p></div>";
 			}
 			?>
 			

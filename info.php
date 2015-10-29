@@ -34,7 +34,8 @@ if(@$_REQUEST['update'])
 				else
 				{
 					$target_dir1 = "uploadfile/";
-					$target_file1 = $target_dir1 . basename($_FILES["image_file"]["name"]);
+					$name_file_add = md5(date("Y-m-d H:i:s"));
+					$target_file1 = $target_dir1 .$name_file_add. basename($_FILES["image_file"]["name"]);
 					if (move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file1)) 
 					{
 						$text_file = $target_file1;
@@ -79,7 +80,8 @@ if(@$_REQUEST['update'])
 		else
 		{
 			$target_dir1 = "uploadfile/";
-			$target_file1 = $target_dir1 . basename($_FILES["image_file"]["name"]);
+			$name_file_add = md5(date("Y-m-d H:i:s"));
+			$target_file1 = $target_dir1 .$name_file_add. basename($_FILES["image_file"]["name"]);
 			if (move_uploaded_file($_FILES["image_file"]["tmp_name"], $target_file1)) 
 			{
 				$text_file = $target_file1;

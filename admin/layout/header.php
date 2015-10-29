@@ -191,16 +191,16 @@ else
 						<img src="<?php echo $row1['image'] ?>" class="img-circle" alt="User Image">
 					</div>
 				<?php					
-				echo "<div class='pull-left info'><p><a class='info' href='info.php'>".$row1['user_name']."</a>,<a class='logout' href='?action=logout'>Thoát</a></p></div>";
+				echo "<div class='pull-left info'><p><a class='info' href='admin_info.php'>".$row1['user_name']."</a>,<a class='logout' href='?action=logout'>Thoát</a></p></div>";
 			}
 			?>
 			
 			
 		</div>
 		<ul class="sidebar-menu">
-					<li class="treeview"><a href="index.php"><i class="fa fa-edit"></i><span>Danh Sách Nhân Viên</span></a></li>
-					<li class="treeview"><a href="staff_manager.php"><i class="fa fa-edit"></i><span>Xác Nhận Lương Hàng Tháng</span></a></li>
-			
+			<li class="treeview"><a href="index.php"><i class="fa fa-edit"></i><span>Danh Sách Nhân Viên</span></a></li>
+			<li class="treeview"><a href="staff_manager.php"><i class="fa fa-edit"></i><span>Xác Nhận Lương Hàng Tháng</span></a></li>
+			<li class="treeview"><a href="add_admin.php"><i class="fa fa-edit"></i><span>Thêm Mới Admin</span></a></li>
 		</ul>
 	</section>
 </aside>
