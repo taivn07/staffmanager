@@ -166,7 +166,7 @@ else
 ?>
 <div class="wrapper">
 <header class="main-header">
-	<a href="index2.html" class="logo">
+	<a href="index.php" class="logo">
 	<span class="logo-mini">P</span>
 	<span class="logo-lg"><img src="../logo.png"></span>
 	</a>
