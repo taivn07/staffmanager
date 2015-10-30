@@ -212,7 +212,7 @@ if($action == "staffmonthchange")
 	$luongot = ($luongtb*1.5)*floor($total_ot/60)+($luongtb*1.5/60)*floor($total_ot%60);
 	$luong = $luongtb*floor($total_time/60) + ($luongtb/60)*($total_time%60);
 	//$confirm_month = date("Y-m", strtotime(date("Y-m-d")));
-	$sql3 = "select * from month_confirm where month_accept like '%".$month_confirm1."%' and user_id=".$user_id." and status = 1";
+	$sql3 = "select * from month_confirm where month_accept like '%".$month_confirm1."%' and user_id=".$user_id." and (status = 1 or status = 0)";
 	$check_confirm = mysql_query($sql3);
 	$num_rows_check_confirm = mysql_num_rows($check_confirm);	
 	if($num_rows_check_confirm > 0)
