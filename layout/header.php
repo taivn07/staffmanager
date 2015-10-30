@@ -4,7 +4,6 @@ $host       = 'localhost';
 $username   = 'root';
 $password   = '';
 $database   = 'staff_manager';
-
 $con = mysql_connect($host, $username, $password);
 mysql_select_db($database, $con);
 

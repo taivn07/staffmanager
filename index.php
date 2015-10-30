@@ -15,14 +15,15 @@ if(@$_REQUEST['send_confirm'])
 {
 	$user_id = $_REQUEST['user_id'];
 	$month = $_REQUEST['month_confirm1'];
-	$results = mysql_query("insert into month_confirm(month_accept,user_id,status) values('".$month."','".$user_id."',1)");
+	$luong_inmonth = $_REQUEST['luong_inmonth'];
+	$results = mysql_query("insert into month_confirm(month_accept,user_id,status,luong_inmonth) values('".$month."','".$user_id."',1,'".$luong_inmonth."')");
 	if($results == TRUE)
 	{
-		echo "<script>alert('gửi báo cáo thành công');window.location.href='statistical.php';</script>";
+		echo "<script>alert('gửi báo cáo thành công');window.location.href='index.php';</script>";
 	}
 	else
 	{
-		echo "<script>alert('gửi báo cáo thất bại');window.location.href='statistical.php';</script>";
+		echo "<script>alert('gửi báo cáo thất bại');window.location.href='index.php';</script>";
 	}
 }
 ?>
@@ -155,7 +156,7 @@ if($user_id != "")
 							<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
 							<td><input type="button" class="btn btn-primary" value="Update" onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 						</tr>';
-						$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
+						
 						$time =  date("H",strtotime($row['time_OT'])) * 3600;
 						$time1 =  date("i",strtotime($row['time_OT'])) * 60;
 						$total_ot += $time + $time1;
@@ -171,7 +172,14 @@ if($user_id != "")
 							<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
 							<td><input type="button" value="Update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 						</tr>';
-						$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
+						if(strtotime($row['time_end']) - strtotime($row['time_start']) - 3600 < 28800)
+						{
+							$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
+						}
+						else
+						{
+							$total_time += 28800;
+						}
 						$time =  date("H",strtotime($row['time_OT'])) * 3600;
 						$time1 =  date("i",strtotime($row['time_OT'])) * 60;
 						$total_ot += $time + $time1;
@@ -233,7 +241,7 @@ if($user_id != "")
 					<td>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</td>
 					<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 					<td>Lương Cơ Bản : '.$row2['luong'].'</td>
-					<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
+					<td><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.ceil($luong+$luongot).'</td>
 					<td><input name="send_confirm" class="btn btn-primary" type="submit" value="Gửi Báo Cáo"></td>
 				</tr></table>';
 			}

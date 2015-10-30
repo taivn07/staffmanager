@@ -80,6 +80,7 @@ function cancel_staff(month,year,user_id)
 					<td>Lương</td>
 					<td>Số Ngày Làm Trong Tháng</td>
 					<td>Số Giờ OT Trong Tháng</td>
+					<td>Lương Nhận Được</td>
 					<td>Action</td>
 				<tr>
 				<?php
@@ -112,6 +113,7 @@ function cancel_staff(month,year,user_id)
 						?>
 						<td><?php echo $daywork;?></td>
 						<td><?php echo sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60);?></td>
+						<td><?php echo $row['luong_inmonth'] ?></td>
 						<td><input type="button" value="Update" onclick="return update_staff(<?php echo date("m",strtotime($row['month_accept'])).",".date("Y",strtotime($row['month_accept'])).",".$row['id']; ?>)">
 						<input type="button" value="Cacel" onclick="return cancel_staff(<?php echo date("m",strtotime($row['month_accept'])).",".date("Y",strtotime($row['month_accept'])).",".$row['id']; ?>)">
 						</td>
