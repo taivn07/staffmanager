@@ -15,6 +15,22 @@ if(!isset($_SESSION))
 $check = @$_SESSION['id'];
 $check_link = explode("/",$_SERVER['SCRIPT_FILENAME']);
 $check_link = $check_link[count($check_link) - 1];
+if($check_link == "login.php")
+{
+	?>
+		<style>
+			.main-sidebar,.main-header
+			{
+				display:none;
+			}
+			.content-wrapper
+			{
+				margin-left:0px !important
+			}
+			
+		</style>
+	<?php
+}
 if($check == "" &&  $check_link != "login.php")
 {
 	echo "<script>window.location.href='login.php';</script>";
