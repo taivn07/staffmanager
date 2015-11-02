@@ -35,37 +35,84 @@ function update_staff(month,year,user_id)
 	xmlhttp.open("GET","admin_ajax.php?action=update_staff&date="+date+"&user_id="+user_id,true);
 	xmlhttp.send();
 }
-function cancel_staff(month,year,user_id)
+function abc(month,year,user_id)
 {
 	var date = year+"-"+month+"-01";
-	if (window.XMLHttpRequest)
-	{// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
+	var reason_text = $('.reason_text').val();
+	if(reason_text != "")
 	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
 		{
-			if(xmlhttp.responseText== "OK")
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
 			{
-				alert("update thành công");
-				window.location.href='staff_manager.php';
-			}
-			else
-			{
-				alert("update không thành công");
-				window.location.href='staff_manager.php';
+				if(xmlhttp.responseText== "OK")
+				{
+					alert("update thành công");
+					window.location.href='staff_manager.php';
+				}
+				else
+				{
+					alert("update không thành công");
+					window.location.href='staff_manager.php';
+				}
 			}
 		}
+		xmlhttp.open("GET","admin_ajax.php?action=cancel_staff&date="+date+"&user_id="+user_id+"&reason="+reason_text,true);
+		xmlhttp.send();
 	}
-	xmlhttp.open("GET","admin_ajax.php?action=cancel_staff&date="+date+"&user_id="+user_id,true);
-	xmlhttp.send();
+	else
+	{
+		alert("Mời Nhập Lý Do");
+		return false;
+	}
 }
+function abcd()
+{
+	$(".reason_form").hide();
+	$(".loading").hide();
+}
+function cancel_staff(month,year,user_id)
+{
+	$(".reason_form").show();
+	$(".loading").show();
+	$('#reason_ok').attr("onclick","return abc("+month+","+year+","+user_id+")");
+}
+
+$(document).ready(function()
+{
+	var width = $(window).width();
+	var left = (width-450)/2;
+	$(".reason_form").css("left",left);
+	
+	
+});
 </script>
+<div class="reason_form">
+	<ul>
+		<li>
+			Lý do
+		</li>
+		<li>
+			<textarea class="reason_text" name="user"></textarea>
+		</li>
+	</ul>
+	<ul>
+		<li>
+			<input type="submit" onclick="return abc()" id="reason_ok" name="reason_ok" value="OK">
+		</li>
+		<li>
+			<input type="submit" onclick="return abcd()" id="reason_cancel" name="reason_cancel" value="Cancel">
+		</li>
+	</ul>
+</div>
 <div class="content-wrapper" style="min-height: 916px;">
 	<section class="content-header">
 	<h1>Danh Sách Xác Nhận Lương</h1>

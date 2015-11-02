@@ -43,6 +43,16 @@ a
 {
 	display:inline-block;
 }
+.reason_form ul li 
+{
+	display:inline-block;
+	padding:20px;
+}
+.reason_form ul li  textarea
+{
+	width:300px;
+	height:100px;
+}
 .login_form ul li
 {
 	display:inline-block;
@@ -51,6 +61,7 @@ a
 .loading
 {
 	position:fixed;
+	display:none;
 	left:0;
 	top:0;
 	right:0;
@@ -59,7 +70,40 @@ a
 	opacity:0.5;
 	z-index:99;
 }
-.login_form
+.close_popup
+{
+	position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    z-index: 8040;
+    background:url(../fancybox_sprite.png);
+	font-size: 0px;
+}
+#reason_popup
+{
+	padding:0px 10px;
+	font-size:16px;
+}
+.reason_popup
+{
+	min-height:200px;
+	display:none;
+	position:fixed;
+	top:200px;
+	z-index:9999;
+	background-color:#fff;
+	padding:20px 0px;
+	border-radius:5px;
+	width:450px;
+}
+.reason_form
+{
+	display:none;
+}
+.login_form,.reason_form
 {
 	position:fixed;
 	top:200px;

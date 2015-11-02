@@ -22,7 +22,14 @@ if($num_rows2 > 0)
 }
 else
 {
-	echo "<script>window.location.href='http://localhost/staff_manager/index.php';</script>";
+	$link = $_SERVER['REQUEST_URI'];
+	$link = explode("admin",$link);
+	for($i=0;$i<count($link);$i++)
+	{
+		$new_link .=  $link[$i];
+	}
+	echo "<script>window.location.href='http://" . $_SERVER['SERVER_NAME'] .$new_link."';</script>";
+	
 }
 $check_link = explode("/",$_SERVER['SCRIPT_FILENAME']);
 $check_link = $check_link[count($check_link) - 1];
@@ -124,6 +131,7 @@ $(document).ready(function()
 });
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
+<div class="loading"></div>
 <?php
 if(@$_SESSION['id'] != "")
 {
@@ -132,7 +140,12 @@ if(@$_SESSION['id'] != "")
 else
 {
 ?>
-	<div class="loading"></div>
+	<style>
+		.loading
+		{
+			display:block;
+		}
+	</style>
 	<div class="login_form">
 		<form>
 			<ul>
@@ -198,9 +211,9 @@ else
 			
 		</div>
 		<ul class="sidebar-menu">
-			<li class="treeview"><a href="index.php"><i class="fa fa-edit"></i><span>Danh Sách Nhân Viên</span></a></li>
+			<li class="treeview"><a href="index.php"><i class="fa fa-list-alt"></i><span>Danh Sách Nhân Viên</span></a></li>
 			<li class="treeview"><a href="staff_manager.php"><i class="fa fa-edit"></i><span>Xác Nhận Lương Hàng Tháng</span></a></li>
-			<li class="treeview"><a href="add_admin.php"><i class="fa fa-edit"></i><span>Thêm Mới Admin</span></a></li>
+			<li class="treeview"><a href="add_admin.php"><i class="fa fa-user-plus"></i><span>Thêm Mới Admin</span></a></li>
 		</ul>
 	</section>
 </aside>

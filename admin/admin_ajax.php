@@ -34,7 +34,8 @@ if($action == "cancel_staff")
 	$time_accept = date('Y-m-d H:i:s');	
 	$month_accept = $_REQUEST['date'];
 	$user_id = $_REQUEST['user_id'];
-	$results = mysql_query("update month_confirm set status=2,is_view=1,time_accept='".$time_accept."' where month_accept='".$month_accept."' and user_id=".$user_id);
+	$reason = $_REQUEST['reason'];
+	$results = mysql_query("update month_confirm set status=2,is_view=1,time_accept='".$time_accept."',reason='".$reason."' where month_accept='".$month_accept."' and user_id=".$user_id);
 	if($results == true)
 	{
 		echo "OK";

@@ -12,9 +12,14 @@ if(!isset($_SESSION))
 } 
 mysql_query("SET CHARACTER SET utf8");
 $action = @$_REQUEST['action'];
-
-
-
+if($action == "update_noti1")
+{
+	$id = $_REQUEST['id'];
+	mysql_query("update month_confirm set is_view = 0 where id=".$id);
+	$results = mysql_query("select reason from month_confirm where id=".$id);
+	$row = mysql_fetch_array($results);	
+	echo $row['reason'];
+}
 if($action == "update_noti")
 {
 	$id = $_REQUEST['id'];

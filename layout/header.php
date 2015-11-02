@@ -63,26 +63,34 @@ if(@$_REQUEST['login'])
 }
 if(@$_REQUEST['register'])
 {
-	$user = $_REQUEST['user'];
-	$pass = md5($_REQUEST['pass']);
-	$check_user = mysql_query("select * from user where user_name='".$user."'");
-	$num_rows1 = @mysql_num_rows($check_login);	
-	if($num_rows1 > 0)
+	if(@$_REQUEST['user'] != "" & @$_REQUEST['pass'] != "")
 	{
-		echo "<script>alert('tài khoản đã có người sử dụng');window.location.href='index.php';</script>";
-	}
-	else
-	{
-		$results = mysql_query("insert into user(user_name,user_pass,status) values('".$user."','".$pass."',1)");
-		if($results == TRUE)
+		$user = $_REQUEST['user'];
+		$pass = md5($_REQUEST['pass']);
+		$check_user = mysql_query("select * from user where user_name='".$user."'");
+		$num_rows1 = @mysql_num_rows($check_user);	
+		if($num_rows1 > 0)
 		{
-			echo "<script>alert('đăng ký thành công');window.location.href='index.php';</script>";
+			echo "<script>alert('tài khoản đã có người sử dụng');window.location.href='index.php';</script>";
 		}
 		else
 		{
-			echo "<script>alert('đăng ký thất bại');window.location.href='index.php';</script>";
+			$results = mysql_query("insert into user(user_name,user_pass,status) values('".$user."','".$pass."',1)");
+			if($results == TRUE)
+			{
+				echo "<script>alert('đăng ký thành công');window.location.href='index.php';</script>";
+			}
+			else
+			{
+				echo "<script>alert('đăng ký thất bại');window.location.href='index.php';</script>";
+			}
 		}
 	}
+	else
+	{
+		echo "<script>alert('Thông Tin Đăng Ký Không Đầy Đủ');window.location.href='index.php';</script>";
+	}
+	
 }
 
 ?>
@@ -144,15 +152,63 @@ function update_noti(id)
 	xmlhttp.open("GET","ajax.php?action=update_noti&id="+id,true);
 	xmlhttp.send();
 }
+function update_noti1(id)
+{
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			
+			$('.loading').show();
+			$('.reason_popup').show();
+			document.getElementById('reason_popup').innerHTML =xmlhttp.responseText;
+			$("#update_noti_"+id).parent().hide();
+			var count = $('.label-success').text() - 1;
+			$("#label-success-header").text("Bạn Có "+count+" messages");
+			$("#label-success").text(count);
+			return false
+			// if(xmlhttp.responseText== "OK")
+			// {
+	
+				// return false;
+			// }
+			// else
+			// {
+				// return false;
+			// }
+		}
+	}
+	xmlhttp.open("GET","ajax.php?action=update_noti1&id="+id,true);
+	xmlhttp.send();
+}
+function close_popup()
+{
+	$('.reason_popup').hide();
+	$('.loading').hide();
+	
+}
 $(document).ready(function()
 {
 	var width = $(window).width();
 	var left = (width-450)/2;
 	$(".login_form").css("left",left);
 	
-	
+	$(".reason_popup").css("left",left);
 });
 </script>
+<div class="loading"></div>
+<div class="reason_popup">
+	<p id="reason_popup"></p>
+	<a class="close_popup" onclick="close_popup();">X</a>
+</div>
 <body class="hold-transition skin-blue sidebar-mini">
 	<?php
 	if(@$_SESSION['id'] != "")
@@ -162,7 +218,7 @@ $(document).ready(function()
 	else
 	{
 	?>
-		<div class="loading"></div>
+		
 		<div class="login_form">
 			<form>
 				<ul>
@@ -228,40 +284,63 @@ $(document).ready(function()
 										<div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;"><ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">';
 								while($row2 = mysql_fetch_array($get_noti))
 								{
-									?>
 									
-										<li>
-										<a href="#" id="update_noti_<?php echo $row2['id']?>" onclick="return update_noti(<?php echo $row2['id']?>)">
-										<div class="pull-left">
-										<img src="noti.png" class="img-circle">
-										</div>
-										<h4>
-										Admin
-										<small><i class="fa fa-clock-o"></i>
-										<?php
-											$starttime = $row2['time_accept'];
-											$stoptime = date('Y-m-d H:i:s');
-											$diff = (strtotime($stoptime) - strtotime($starttime));
-											$total = $diff/60;
-											echo sprintf("%02dh %02dm", floor($total/60), $total%60);		
-										?>
-										</small>
-										</h4>
-										<?php
 										if($row2['status'] == 2)
 										{
-											echo "<p>Báo Cáo Lương Tháng ".date("m",strtotime($row2['month_accept']))." Của Bạn Đã Bị Huỷ Bỏ</p>";
+											?>
+											<li>
+												<a href="#" id="update_noti1_<?php echo $row2['id']?>" onclick="return update_noti1(<?php echo $row2['id']?>)">
+												<div class="pull-left">
+												<img src="noti.png" class="img-circle">
+												</div>
+												<h4>
+												Admin
+												<small><i class="fa fa-clock-o"></i>
+												<?php
+													$starttime = $row2['time_accept'];
+													$stoptime = date('Y-m-d H:i:s');
+													$diff = (strtotime($stoptime) - strtotime($starttime));
+													$total = $diff/60;
+													echo sprintf("%02dh %02dm", floor($total/60), $total%60);		
+												?>
+												</small>
+												</h4>
+												<?php										
+													echo "<p>Báo Cáo Lương Tháng ".date("m",strtotime($row2['month_accept']))." Của Bạn Đã Bị Huỷ Bỏ</p>";
+												?>
+												
+												</a>
+											</li>
+											<?php
 										}
 										else if($row2['status'] == 0)
 										{
-											echo "<p>Báo Cáo Lương Tháng ".date("m",strtotime($row2['month_accept']))." Của Bạn Đã Được Chấp Nhận</p>";
+											?>
+											<li>
+												<a href="#" id="update_noti_<?php echo $row2['id']?>" onclick="return update_noti(<?php echo $row2['id']?>)">
+												<div class="pull-left">
+												<img src="noti.png" class="img-circle">
+												</div>
+												<h4>
+												Admin
+												<small><i class="fa fa-clock-o"></i>
+												<?php
+													$starttime = $row2['time_accept'];
+													$stoptime = date('Y-m-d H:i:s');
+													$diff = (strtotime($stoptime) - strtotime($starttime));
+													$total = $diff/60;
+													echo sprintf("%02dh %02dm", floor($total/60), $total%60);		
+												?>
+												</small>
+												</h4>
+												<?php										
+													echo "<p>Báo Cáo Lương Tháng ".date("m",strtotime($row2['month_accept']))." Của Bạn Đã Được Chấp Nhận</p>";
+												?>
+												</a>
+											</li>
+											<?php
+											
 										}
-										?>
-										
-										</a>
-										</li>
-										
-									<?php
 								}
 								echo '</div>
 									</li>';
@@ -327,8 +406,8 @@ $(document).ready(function()
 		</div>
 		<ul class="sidebar-menu">
 
-					<li class="treeview"><a href="index.php"><i class="fa fa-edit"></i><span>Home</span></a></li>
-					<li class="treeview"><a href="info.php"><i class="fa fa-edit"></i><span>Thông Tin Nhân Viên</span></a></li>
+					<li class="treeview"><a href="index.php"><i class="fa fa-home"></i><span>Home</span></a></li>
+					<li class="treeview"><a href="info.php"><i class="fa fa-info-circle"></i><span>Thông Tin Nhân Viên</span></a></li>
 			
 		</ul>
 	</section>
