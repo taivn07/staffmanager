@@ -15,9 +15,9 @@ if(!isset($_SESSION))
 $check = @$_SESSION['id'];
 $check_link = explode("/",$_SERVER['SCRIPT_FILENAME']);
 $check_link = $check_link[count($check_link) - 1];
-if($check == "" &&  $check_link != "index.php")
+if($check == "" &&  $check_link != "login.php")
 {
-	echo "<script>alert('mời bạn đăng nhập');window.location.href='index.php';</script>";
+	echo "<script>window.location.href='login.php';</script>";
 }
 else
 {
@@ -27,70 +27,7 @@ else
 if(@$_REQUEST['action'] == "logout")
 {
 	session_destroy();
-	echo "<script>alert('đăng xuất thành công');window.location.href='index.php';</script>";
-}
-if(@$_REQUEST['login'])
-{
-	$user = $_REQUEST['user'];
-	$pass = md5($_REQUEST['pass']);
-	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
-	$num_rows1 = @mysql_num_rows($check_login);	
-	if($num_rows1 > 0)
-	{
-		
-		$row = mysql_fetch_array($check_login);
-		$_SESSION['id'] = $row['id'];  
-		if($row['status'] == 1)
-		{
-			echo "<script>alert('đăng nhập thành công');window.location.href='index.php';</script>";
-		}
-		else
-		{
-			if($row['status'] == 2)
-			{
-				echo "<script>alert('đăng nhập thành công');window.location.href='admin/index.php';</script>";
-			}
-			else
-			{
-				echo "<script>alert('đăng nhập thất bại');window.location.href='index.php';</script>";
-			}
-		}
-	}
-	else
-	{
-		echo "<script>alert('đăng nhập thất bại');window.location.href='index.php';</script>";
-	}
-}
-if(@$_REQUEST['register'])
-{
-	if(@$_REQUEST['user'] != "" & @$_REQUEST['pass'] != "")
-	{
-		$user = $_REQUEST['user'];
-		$pass = md5($_REQUEST['pass']);
-		$check_user = mysql_query("select * from user where user_name='".$user."'");
-		$num_rows1 = @mysql_num_rows($check_user);	
-		if($num_rows1 > 0)
-		{
-			echo "<script>alert('tài khoản đã có người sử dụng');window.location.href='index.php';</script>";
-		}
-		else
-		{
-			$results = mysql_query("insert into user(user_name,user_pass,status) values('".$user."','".$pass."',1)");
-			if($results == TRUE)
-			{
-				echo "<script>alert('đăng ký thành công');window.location.href='index.php';</script>";
-			}
-			else
-			{
-				echo "<script>alert('đăng ký thất bại');window.location.href='index.php';</script>";
-			}
-		}
-	}
-	else
-	{
-		echo "<script>alert('Thông Tin Đăng Ký Không Đầy Đủ');window.location.href='index.php';</script>";
-	}
-	
+	echo "<script>window.location.href='login.php';</script>";
 }
 
 ?>
@@ -210,46 +147,7 @@ $(document).ready(function()
 	<a class="close_popup" onclick="close_popup();">X</a>
 </div>
 <body class="hold-transition skin-blue sidebar-mini">
-	<?php
-	if(@$_SESSION['id'] != "")
-	{
-		
-	}
-	else
-	{
-	?>
-		
-		<div class="login_form">
-			<form>
-				<ul>
-					<li>
-						User Name
-					</li>
-					<li>
-						<input type="text" name="user">
-					</li>
-				</ul>
-				<ul>
-					<li>
-						User Pass
-					</li>
-					<li>
-						<input type="password" name="pass">
-					</li>
-				</ul>
-				<ul>
-					<li>
-						<input type="submit" name="login" value="Đăng Nhập">
-					</li>
-					<li>
-						<input type="submit" name="register" value="Đăng Ký">
-					</li>
-				</ul>
-			</form>
-		</div>
-	<?php
-	}
-	?>
+
 <div class="wrapper">
 <header class="main-header">
 	<a href="index.php" class="logo">

@@ -12,6 +12,38 @@ if(!isset($_SESSION))
 } 
 mysql_query("SET CHARACTER SET utf8");
 $action = @$_REQUEST['action'];
+if($action == "check_login")
+{
+	$user = $_REQUEST['user'];
+	$pass = md5($_REQUEST['pass']);
+	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
+	$num_rows1 = @mysql_num_rows($check_login);	
+	if($num_rows1 > 0)
+	{
+		
+		$row = mysql_fetch_array($check_login);
+		$_SESSION['id'] = $row['id'];  
+		if($row['status'] == 1)
+		{
+			echo "OK";
+		}
+		else
+		{
+			if($row['status'] == 2)
+			{
+				echo "OK1";
+			}
+			else
+			{
+				echo "FAIL";
+			}
+		}
+	}
+	else
+	{
+		echo "FAIL";
+	}
+}
 if($action == "update_noti1")
 {
 	$id = $_REQUEST['id'];

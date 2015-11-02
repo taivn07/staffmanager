@@ -24,9 +24,13 @@ else
 {
 	$link = $_SERVER['REQUEST_URI'];
 	$link = explode("admin",$link);
-	for($i=0;$i<count($link);$i++)
+	if($link[0] == "/staff_manager/")
 	{
-		$new_link .=  $link[$i];
+		$new_link = "/staff_manager/";
+	}
+	else
+	{
+		$new_link = "/";
 	}
 	echo "<script>window.location.href='http://" . $_SERVER['SERVER_NAME'] .$new_link."';</script>";
 	
@@ -35,7 +39,18 @@ $check_link = explode("/",$_SERVER['SCRIPT_FILENAME']);
 $check_link = $check_link[count($check_link) - 1];
 if($check == "" &&  $check_link != "index.php")
 {
-	echo "<script>alert('mời bạn đăng nhập');window.location.href='index.php';</script>";
+	$link = $_SERVER['REQUEST_URI'];
+	$link = explode("admin",$link);
+	echo $link[0];
+	if($link[0] == "/staff_manager/")
+	{
+		$new_link = "/staff_manager/";
+	}
+	else
+	{
+		$new_link = "/";
+	}
+	echo "<script>window.location.href='http://" . $_SERVER['SERVER_NAME'] .$new_link."';</script>";
 }
 else
 {
@@ -45,56 +60,9 @@ else
 if(@$_REQUEST['action'] == "logout")
 {
 	session_destroy();
-	echo "<script>alert('đăng xuất thành công');window.location.href='index.php';</script>";
+	echo "<script>window.location.href='index.php';</script>";
 }
-if(@$_REQUEST['login'])
-{
-	$user = $_REQUEST['user'];
-	$pass = md5($_REQUEST['pass']);
-	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
-	$num_rows1 = @mysql_num_rows($check_login);	
-	if($num_rows1 > 0)
-	{
-		
-		$row = mysql_fetch_array($check_login);
-		$_SESSION['id'] = $row['id'];  
-		if($row['status'] == 1)
-		{
-			echo "<script>alert('đăng nhập thành công');window.location.href='index.php';</script>";
-		}
-		else
-		{
-			echo "<script>alert('đăng nhập thành công');window.location.href='admin/index.php';</script>";
-		}
-	}
-	else
-	{
-		echo "<script>alert('đăng nhập thất bại');window.location.href='index.php';</script>";
-	}
-}
-if(@$_REQUEST['register'])
-{
-	$user = $_REQUEST['user'];
-	$pass = md5($_REQUEST['pass']);
-	$check_user = mysql_query("select * from user where user_name='".$user."'");
-	$num_rows1 = @mysql_num_rows($check_login);	
-	if($num_rows1 > 0)
-	{
-		echo "<script>alert('tài khoản đã có người sử dụng');window.location.href='index.php';</script>";
-	}
-	else
-	{
-		$results = mysql_query("insert into user(user_name,user_pass,status) values('".$user."','".$pass."',1)");
-		if($results == TRUE)
-		{
-			echo "<script>alert('đăng ký thành công');window.location.href='index.php';</script>";
-		}
-		else
-		{
-			echo "<script>alert('đăng ký thất bại');window.location.href='index.php';</script>";
-		}
-	}
-}
+
 
 ?>
 <html>
@@ -132,51 +100,7 @@ $(document).ready(function()
 </script>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="loading"></div>
-<?php
-if(@$_SESSION['id'] != "")
-{
-	
-}
-else
-{
-?>
-	<style>
-		.loading
-		{
-			display:block;
-		}
-	</style>
-	<div class="login_form">
-		<form>
-			<ul>
-				<li>
-					User Name
-				</li>
-				<li>
-					<input type="text" name="user">
-				</li>
-			</ul>
-			<ul>
-				<li>
-					User Pass
-				</li>
-				<li>
-					<input type="password" name="pass">
-				</li>
-			</ul>
-			<ul>
-				<li>
-					<input type="submit" name="login" value="Đăng Nhập">
-				</li>
-				<li>
-					<input type="submit" name="register" value="Đăng Ký">
-				</li>
-			</ul>
-		</form>
-	</div>
-<?php
-}
-?>
+
 <div class="wrapper">
 <header class="main-header">
 	<a href="index.php" class="logo">

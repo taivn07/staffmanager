@@ -21,6 +21,10 @@ a
 	width:200px;
 	padding:5px;
 }
+.error_label
+{
+	display:none;
+}
 .navbar-nav>.notifications-menu>.dropdown-menu, .navbar-nav>.messages-menu>.dropdown-menu, .navbar-nav>.tasks-menu>.dropdown-menu
 {
 	width:400px !Important;
@@ -69,6 +73,10 @@ a
 	background-color:#000;
 	opacity:0.5;
 	z-index:99;
+}
+.login_form ul
+{
+	padding:0px 10px;
 }
 .close_popup
 {
