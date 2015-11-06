@@ -8,7 +8,7 @@ if(@$_REQUEST['add'])
 	$name = $_REQUEST['name'];
 	if($username == "" || $pass == "" || $pass1 == "" || $name == ""  )
 	{
-		echo "<script>alert('Chưa Nhập Đầy Đủ Thông Tin');window.location.href='add_admin.php';</script>";
+		echo "<script>alert('Chưa Nhập Đầy Đủ Thông Tin');window.location.href='add_staff.php';</script>";
 	}
 	else
 	{
@@ -16,21 +16,22 @@ if(@$_REQUEST['add'])
 		$row_count = mysql_num_rows($check);
 		if($row_count > 0)
 		{
-			echo "<script>alert('tài khoản đã tồn tại');window.location.href='add_admin.php';</script>";
+			echo "<script>alert('tài khoản đã tồn tại');window.location.href='add_staff.php';</script>";
 		}
 		else
 		{
-			$sql = "insert into user(user_name,user_pass,name,status) values('".$username."','".md5($pass)."','".$name."',2)";
+			$sql = "insert into user(user_name,user_pass,name,status) values('".$username."','".md5($pass)."','".$name."',1)";
 			$results = mysql_query($sql);
 			if($results == TRUE)
 			{
-				echo "<script>alert('thêm mới thành công');window.location.href='add_admin.php';</script>";
+				echo "<script>alert('thêm mới thành công');window.location.href='add_staff.php';</script>";
 			}
 			else
 			{
-				echo "<script>alert('thêm mới thất bại');window.location.href='add_admin.php';</script>";
+				echo "<script>alert('thêm mới thất bại');window.location.href='add_staff.php';</script>";
 			}
 		}
+		
 	}
 }
 ?>
@@ -41,7 +42,7 @@ if(@$_REQUEST['add'])
 	<div class="content">
 		<div id="statistical" class="box">
 			<div class="box-header with-border">
-				<h3>Thêm Mới Admin</h3>
+				<h3>Thêm Mới Nhân Viên</h3>
 			</div>
 			<form role="form"  method ="POST" enctype="multipart/form-data">
 				<div class="box-body">
