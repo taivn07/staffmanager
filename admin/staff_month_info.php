@@ -11,7 +11,7 @@ $endday =  date("t", strtotime($day));
 $sql1 = "select * from user where id=".$user_id;
 $get_user = mysql_query($sql1);
 $row2 = mysql_fetch_array($get_user);
-if($_REQUEST['Update'])
+if(@$_REQUEST['Update'])
 {
 	$time_accept = date('Y-m-d H:i:s');	
 	$month_confirm_id = $_REQUEST['month_confirm_id'];
@@ -27,7 +27,7 @@ if($_REQUEST['Update'])
 		echo "<script>alert('Update Thất Bại');window.location.href='staff_manager.php';</script>";
 	}
 }
-if($_REQUEST['Cancel'])
+if(@$_REQUEST['Cancel'])
 {
 	$time_accept = date('Y-m-d H:i:s');	
 	$month_confirm_id = $_REQUEST['month_confirm_id'];

@@ -65,14 +65,81 @@ if($action == "update_noti")
 		echo "Fail";
 	}
 }
+if($action == "update_time1")
+{
+	$month = date("Y-m-01", strtotime(@$_REQUEST['day'])); 
+	$day = date("Y-m-d", strtotime(@$_REQUEST['day'])); 
+	$user_id = @$_REQUEST['user_id']; 
+	$check_day_leave = mysql_query("select day_leave from user where id=".$user_id);
+	$row = mysql_fetch_array($check_day_leave);	
+	if($row['day_leave'] > 0)
+	{
+		$check = mysql_query("select * from month_confirm where month_accept='".$month."' and (status = 1 or status = 0) and user_id=".$user_id);
+		$num_rows_check = @mysql_num_rows($check);	
+		if($num_rows_check > 0)
+		{
+			echo "FAIL";
+		}
+		else
+		{
+			$sql = "select * from staff_time where time_start like '%".$day."%' and user_id='".$user_id."'";
+			$timestart_val = date("Y-m-d H:i:s", strtotime(date($day." 08:00:00")));
+			$timeend_val = date("Y-m-d H:i:s", strtotime(date($day." 17:00:00")));
+			$timeOT_val = "0"; 
+			$get_cal = mysql_query($sql);
+			$num_rows = @mysql_num_rows($get_cal);	
+			if($num_rows > 0)
+			{
+				
+				$new_day_leave = $row['day_leave'] - 1;
+				$row = mysql_fetch_array($get_cal);	
+				if($row['is_day_leave'] != 1)
+				{
+					
+					$results = mysql_query("update staff_time set time_start='".$timestart_val."',time_end='".$timeend_val."',time_OT='".$timeOT_val."',is_day_leave=1 where id=".$row['id']);
+					$results1 = mysql_query("update user set day_leave='".$new_day_leave."' where id=".$user_id);
+					if($results == true && $results1 == true)
+					{
+						echo "OK";
+					}
+					else
+					{
+						echo "FAIL1";
+					}
+				}
+				else
+				{
+					echo "FAIL1";
+				}
+			}
+			else
+			{
+				$results = mysql_query("insert into staff_time(user_id,time_start,time_end,time_OT,is_day_leave) values('".$user_id."','".$timestart_val."','".$timeend_val."','".$timeOT_val."',1)");
+				if($results == true)
+				{
+					echo "OK";
+				}
+				else
+				{
+					echo "FAIL1";
+				}
+			}
+		}
+	}
+	else
+	{
+		echo "FAIL2";
+	}
+}
 if($action == "update_time")
 {
+	$month = date("Y-m-01", strtotime(@$_REQUEST['day'])); 
 	$day = date("Y-m-d", strtotime(@$_REQUEST['day'])); 
 	$user_id = @$_REQUEST['user_id']; 
 	$timestart_val = date("Y-m-d H:i:s", strtotime(date($day." ".@$_REQUEST['timestart_val'])));
 	$timeend_val = date("Y-m-d H:i:s", strtotime(date($day." ".@$_REQUEST['timeend_val'])));
 	$timeOT_val = @$_REQUEST['timeOT_val']; 
-	$check = mysql_query("select * from month_confirm where month_accept='".$day."' and user_id=".$user_id);
+	$check = mysql_query("select * from month_confirm where month_accept='".$month."' and (status = 1 or status = 0) and user_id=".$user_id);
 	$num_rows_check = @mysql_num_rows($check);	
 	if($num_rows_check > 0)
 	{
@@ -86,19 +153,41 @@ if($action == "update_time")
 		$num_rows = @mysql_num_rows($get_cal);	
 		if($num_rows > 0)
 		{
+				
 			$row = mysql_fetch_array($get_cal);	
-			$results = mysql_query("update staff_time set time_start='".$timestart_val."',time_end='".$timeend_val."',time_OT='".$timeOT_val."' where id=".$row['id']);
-			if($results == true)
+			if($row['is_day_leave'] == 1)
 			{
-				echo "OK";
+				$check_day_leave = mysql_query("select day_leave from user where id=".$user_id);
+				$row_day = mysql_fetch_array($check_day_leave);	
+				$new_day_leave = $row_day['day_leave'] + 1;
+				$results1 = mysql_query("update user set day_leave='".$new_day_leave."' where id=".$user_id);
+				$results = mysql_query("delete from staff_time where id=".$row['id']);
+				if($results == true && $results1 == true)
+				{
+					echo "OK1";
+				}
+				else
+				{
+					echo "FAIL";
+				}
 			}
 			else
 			{
-				echo "FAIL1";
+				$results = mysql_query("update staff_time set time_start='".$timestart_val."',time_end='".$timeend_val."',time_OT='".$timeOT_val."' where id=".$row['id']);
+				if($results == true)
+				{
+					echo "OK";
+				}
+				else
+				{
+					echo "FAIL1";
+				}
 			}
+			
 		}
 		else
 		{
+			
 			$results = mysql_query("insert into staff_time(user_id,time_start,time_end,time_OT) values('".$user_id."','".$timestart_val."','".$timeend_val."','".$timeOT_val."')");
 			if($results == true)
 			{
@@ -184,9 +273,9 @@ if($action == "staffmonthchange")
 				$output .='
 				<tr>	
 					<td>'.$thu." , ".$i."-".$data.'</td>
-					<td><input disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
-					<td><input disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
-					<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
+					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
+					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';
 				$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
@@ -200,9 +289,9 @@ if($action == "staffmonthchange")
 				$output .='
 				<tr>	
 					<td>'.$thu." , ".$i."-".$data.'</td>
-					<td><input type="text" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$data.'_timestart"></td>
-					<td><input type="text" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$data.'_timeend"></td>
-					<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$data.'_timestart"></td>
+					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$data.'_timeend"></td>
+					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';
 				$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
@@ -221,9 +310,9 @@ if($action == "staffmonthchange")
 				$output .='
 				<tr>
 					<td>'.$thu." , ".$i."-".$data.'</td>
-					<td><input disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
-					<td><input disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
-					<td><input type="text" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
+					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
+					<td><input type="text" class="timepicker2" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';		
 			}
@@ -232,9 +321,9 @@ if($action == "staffmonthchange")
 				$output .='
 				<tr>
 					<td>'.$thu." , ".$i."-".$data.'</td>
-					<td><input type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
-					<td><input type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
-					<td><input type="text" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="text" class="timepicker2" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
+					<td><input type="text" class="timepicker2" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
+					<td><input type="text" class="timepicker2" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';		
 				$time_inmonth += 8;
@@ -259,7 +348,7 @@ if($action == "staffmonthchange")
 		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td><input name="send_confirm" disabled="disabled" class="btn btn-primary" type="submit" value="Gửi Báo Cáo"></td>
+		<td><input name="send_confirm" disabled="disabled" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
 		</tr></table>';
 	}
 	else
@@ -269,7 +358,7 @@ if($action == "staffmonthchange")
 		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td><input name="send_confirm" class="btn btn-primary" type="submit" value="Gửi Báo Cáo"></td>
+		<td><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
 		</tr></table>';
 	}
 	

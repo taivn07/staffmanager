@@ -31,43 +31,108 @@ if(@$_REQUEST['send_confirm'])
 
 function update_time(day,month,year,user_id)
 {
+	
 	var info = day+"-"+month+"-"+year;
-	var timestart_val = $("#"+info+"_timestart").val();
-	var timeend_val = $("#"+info+"_timeend").val();
-	var timeOT_val = $("#"+info+"_timeOT").val();
-	if (window.XMLHttpRequest)
-	{// code for IE7+, Firefox, Chrome, Opera, Safari
-	  xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{// code for IE6, IE5
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	xmlhttp.onreadystatechange=function()
-	{
-		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+	if (document.getElementById(info+"_day_leave").checked) {
+		var timestart_val = "8:00";
+		var timeend_val = "17:00";
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
 		{
-			if(xmlhttp.responseText== "OK")
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
 			{
-				alert("Update thành công");
-				return false;
-			}
-			else if(xmlhttp.responseText== "FAIL")
-			{
+				if(xmlhttp.responseText== "OK")
+				{
+					alert("Update thành công");
+					$("#"+info+"_timestart").attr("disabled","disabled");
+					$("#"+info+"_timeend").attr("disabled","disabled");
+					$("#"+info+"_timeOT").attr("disabled","disabled");
+					return false;
+				}
+				else if(xmlhttp.responseText== "FAIL")
+				{
+						
+					alert("Báo Cáo Đã Gửi Không Thể Update");
+					return false;
+				}
+				else if(xmlhttp.responseText== "FAIL2")
+				{
+					alert("Số Ngày Nghỉ Phép Không Đủ");
+					return false;
 					
-				alert("Báo Cáo Đã Gửi Không Thể Update");
-				return false;
-			}
-			else
-			{
-					
-				alert("Update Thất Bại");
-				return false;
+				}
+				else
+				{
+					alert("Update Thất Bại");
+					return false;
+				}
 			}
 		}
+		xmlhttp.open("GET","ajax.php?action=update_time1&day="+info+"&user_id="+user_id,true);
+		xmlhttp.send();
+	
 	}
-	xmlhttp.open("GET","ajax.php?action=update_time&day="+info+"&user_id="+user_id+"&timestart_val="+timestart_val+"&timeend_val="+timeend_val+"&timeOT_val="+timeOT_val,true);
-	xmlhttp.send();
+	else
+	{
+		var timestart_val = $("#"+info+"_timestart").val();
+		var timeend_val = $("#"+info+"_timeend").val();
+		var timeOT_val = $("#"+info+"_timeOT").val();
+		if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+		  xmlhttp=new XMLHttpRequest();
+		}
+		else
+		{// code for IE6, IE5
+			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4 && xmlhttp.status==200)
+			{
+				if(xmlhttp.responseText== "OK")
+				{
+					alert("Update thành công");
+					return false;
+				}
+				else if(xmlhttp.responseText== "OK1")
+				{
+					$("#"+info+"_timestart").attr("disabled",false);
+					$("#"+info+"_timestart").val(""); 
+					$("#"+info+"_timestart").attr("placeholder","08:00");
+					$("#"+info+"_timeend").attr("disabled",false);
+					$("#"+info+"_timeend").val(""); 
+					$("#"+info+"_timeend").attr("placeholder","17:00");
+					$("#"+info+"_timeOT").attr("disabled",false);
+					$("#"+info+"_timeOT").val(""); 
+					$("#"+info+"_timeOT").attr("placeholder","1:00");
+					alert("Update thành công");
+					return false;
+				}
+				else if(xmlhttp.responseText== "FAIL")
+				{
+						
+					alert("Báo Cáo Đã Gửi Không Thể Update");
+					return false;
+				}
+				else
+				{
+						
+					alert("Update Thất Bại");
+					return false;
+				}
+			}
+		}
+		xmlhttp.open("GET","ajax.php?action=update_time&day="+info+"&user_id="+user_id+"&timestart_val="+timestart_val+"&timeend_val="+timeend_val+"&timeOT_val="+timeOT_val,true);
+		xmlhttp.send();
+	}
+	
 }
 
 </script>
@@ -101,6 +166,7 @@ if($user_id != "")
 						<th>Bắt Đầu</th>
 						<th>Kết Thúc</th>
 						<th>Giờ OT</th>
+						<th>Nghỉ Phép</th>
 						<th>Thao Tác</th>
 					</tr>';
 			for($i = 1; $i <$endday; $i++)
@@ -147,13 +213,13 @@ if($user_id != "")
 					
 					if($dayname == 6 || $dayname == 7)
 					{
-						$row = mysql_fetch_array($get_cal);
 						$output .='
 						<tr>	
 							<td>'.$thu." , ".$i."-".$day.'</td>
-							<td><input disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
-							<td><input disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
-							<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input class="timepicker2" disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
+							<td><input class="timepicker2" disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
+							<td><input class="timepicker2" type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input type="checkbox" id="'.$i."-".$day.'_day_leave"></td>
 							<td><input type="button" class="btn btn-primary" value="Update" onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 						</tr>';
 						
@@ -164,14 +230,31 @@ if($user_id != "")
 					else
 					{
 						$row = mysql_fetch_array($get_cal);
-						$output .='
-						<tr>	
-							<td>'.$thu." , ".$i."-".$day.'</td>
-							<td><input type="text" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$day.'_timestart"></td>
-							<td><input type="text" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$day.'_timeend"></td>
-							<td><input type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
-							<td><input type="button" value="Update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
-						</tr>';
+						if($row['is_day_leave'] == 1)
+						{
+							$output .='
+							<tr>	
+								<td>'.$thu." , ".$i."-".$day.'</td>
+								<td><input class="timepicker2" disabled="disabled" type="text" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$day.'_timestart"></td>
+								<td><input class="timepicker2" disabled="disabled" type="text" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$day.'_timeend"></td>
+								<td><input class="timepicker2" disabled="disabled" type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
+								<td><input type="checkbox" checked="checked" id="'.$i."-".$day.'_day_leave"></td>
+								<td><input type="button" value="Update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
+							</tr>';
+						}
+						else
+						{
+							$output .='
+							<tr>	
+								<td>'.$thu." , ".$i."-".$day.'</td>
+								<td><input class="timepicker2" type="text" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$day.'_timestart"></td>
+								<td><input class="timepicker2" type="text" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$day.'_timeend"></td>
+								<td><input class="timepicker2" type="text" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$day.'_timeOT"></td>
+								<td><input type="checkbox" id="'.$i."-".$day.'_day_leave"></td>
+								<td><input type="button" value="Update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
+							</tr>';
+						}
+						
 						if(strtotime($row['time_end']) - strtotime($row['time_start']) - 3600 < 28800)
 						{
 							$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
@@ -195,9 +278,10 @@ if($user_id != "")
 						$output .='
 						<tr>
 							<td>'.$thu." , ".$i."-".$day.'</td>
-							<td><input disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
-							<td><input disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
-							<td><input type="text" placeholder="1:00" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input class="timepicker2" disabled="disabled" type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
+							<td><input class="timepicker2" disabled="disabled" type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
+							<td><input class="timepicker2" type="text" placeholder="1:00" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input type="checkbox" id="'.$i."-".$day.'_day_leave"></td>
 							<td><input type="button" class="btn btn-primary"  value="Update" onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 						</tr>';		
 					}
@@ -206,9 +290,10 @@ if($user_id != "")
 						$output .='
 						<tr>
 							<td>'.$thu." , ".$i."-".$day.'</td>
-							<td><input type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
-							<td><input type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
-							<td><input type="text" placeholder="1:00" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input class="timepicker2" type="text" placeholder="08:00" id="'.$i."-".$day.'_timestart"></td>
+							<td><input class="timepicker2" type="text" placeholder="17:00" id="'.$i."-".$day.'_timeend"></td>
+							<td><input class="timepicker2" type="text" placeholder="1:00" id="'.$i."-".$day.'_timeOT"></td>
+							<td><input type="checkbox" id="'.$i."-".$day.'_day_leave"></td>
 							<td><input type="button" class="btn btn-primary"  value="Update" onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 						</tr>';		
 						$time_inmonth += 8;
