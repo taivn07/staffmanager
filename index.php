@@ -317,7 +317,7 @@ if($user_id != "")
 					<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 					<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 					<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-					<td><input disabled="disabled" class="btn btn-primary" type="button" value="Gửi Báo Cáo"></td>
+					<td colspan="2"><input disabled="disabled" class="btn btn-danger" type="button" value="Gửi Báo Cáo"></td>
 				</tr></table>';
 			}	
 			else
@@ -327,7 +327,7 @@ if($user_id != "")
 					<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 					<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 					<td><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-					<td><input name="send_confirm" class="btn btn-primary" type="submit" value="Gửi Báo Cáo"></td>
+					<td colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
 				</tr></table>';
 			}
 			

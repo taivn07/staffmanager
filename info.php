@@ -7,6 +7,7 @@ if(@$_REQUEST['update'])
 	$user_oldpass = md5(@$_REQUEST['user_oldpass']);
 	$user_pass = md5(@$_REQUEST['user_pass']);
 	$user_pass1 = md5(@$_REQUEST['user_pass1']);
+	$email = $_REQUEST['email'];
 	if($_REQUEST['user_oldpass'] != "")
 	{
 		if($user_pass != $user_pass1)
@@ -21,7 +22,7 @@ if(@$_REQUEST['update'])
 			{
 				if(basename($_FILES["image_file"]["name"]) == "")
 				{
-					$check = mysql_query("update user set user_pass='".$user_pass."',name='".$name."' where id='".$user_id."'");	
+					$check = mysql_query("update user set user_pass='".$user_pass."',name='".$name."',email='".$email."' where id='".$user_id."'");	
 					if($check == TRUE)
 					{
 						echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='info.php';</script>";
@@ -44,7 +45,7 @@ if(@$_REQUEST['update'])
 					{
 						$text_file ="";
 					}
-					$check = mysql_query("update user set user_pass='".$user_pass."',name='".$name."',image='".$text_file."' where id='".$user_id."'");	
+					$check = mysql_query("update user set user_pass='".$user_pass."',name='".$name."',email='".$email."',image='".$text_file."' where id='".$user_id."'");	
 					if($check == TRUE)
 					{
 						echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='info.php';</script>";
@@ -67,7 +68,7 @@ if(@$_REQUEST['update'])
 	{
 		if(basename($_FILES["image_file"]["name"]) == "")
 		{
-			$check = mysql_query("update user set name='".$name."' where id='".$user_id."'");	
+			$check = mysql_query("update user set name='".$name."',email='".$email."' where id='".$user_id."'");	
 			if($check == TRUE)
 			{
 				echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='info.php';</script>";
@@ -90,7 +91,7 @@ if(@$_REQUEST['update'])
 			{
 				$text_file ="";
 			}
-			$check = mysql_query("update user set name='".$name."',image='".$text_file."' where id='".$user_id."'");	
+			$check = mysql_query("update user set name='".$name."',image='".$text_file."',email='".$email."' where id='".$user_id."'");	
 			if($check == TRUE)
 			{
 				echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='info.php';</script>";
@@ -129,6 +130,9 @@ if(@$_REQUEST['update'])
 					</div>
 					<div class="form-group">
 						<label>Họ Và Tên</label><input type="text" class="form-control"  name="name" value="<?php echo $row['name']; ?>">
+					</div>
+					<div class="form-group">
+						<label>Email</label><input type="email" class="form-control"  name="email" value="<?php echo $row['email']; ?>">
 					</div>
 					<div class="form-group">
 						<label>Old Password</label><input type="password" class="form-control" name="user_oldpass" value="">

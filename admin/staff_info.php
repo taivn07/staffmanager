@@ -4,10 +4,25 @@ $user_id = @$_REQUEST['id'];
 $sql1 = "select * from user where id=".$user_id."";
 $results1 = mysql_query($sql1);
 $num_rows1 = mysql_num_rows($results1);	
+if(@$_REQUEST['delete'])
+{
+	$user_id =$_REQUEST['user_id'];
+	$check = mysql_query("delete from user where id=".$user_id);
+	if($check == TRUE)
+	{
+		echo "<script>alert('Xoá Nhân Viên Thành Công');window.location.href='index.php';</script>";
+	}
+	else
+	{
+		echo "<script>alert('Xoá Nhân Viên Thất Bại');window.location.href='index.php';</script>";
+	}
+}
 if($num_rows1 > 0)
 {
 	
 	$row = mysql_fetch_array($results1);
+	
+	
 	if(@$_REQUEST['update'])
 	{
 		$user_id =$_REQUEST['user_id'];
@@ -16,6 +31,7 @@ if($num_rows1 > 0)
 		$new_pass = @md5($_REQUEST['new_pass']);
 		$confirm_new_pass = @md5($_REQUEST['confirm_new_pass']);
 		$block = @$_REQUEST['block'];
+		$day_leave = $_REQUEST['day_leave'];
 		if($block != "")
 		{
 			$block = $_REQUEST['block'];
@@ -26,7 +42,7 @@ if($num_rows1 > 0)
 		}
 		if($new_pass == "")
 		{
-			$check = mysql_query("update user set name='".$ten."',luong='".$luong."',status='".$block."' where id=".$user_id);
+			$check = mysql_query("update user set name='".$ten."',luong='".$luong."',status='".$block."',day_leave='".$day_leave."' where id=".$user_id);
 			if($check == TRUE)
 			{
 				echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='staff_info.php?id=".$user_id."';</script>";
@@ -44,7 +60,7 @@ if($num_rows1 > 0)
 			}
 			else
 			{
-				$check = mysql_query("update user set name='".$ten."',luong='".$luong."',status='".$block."',user_pass='".$new_pass."' where id=".$user_id);
+				$check = mysql_query("update user set name='".$ten."',luong='".$luong."',status='".$block."',user_pass='".$new_pass."',day_leave='".$day_leave."' where id=".$user_id);
 				if($check == TRUE)
 				{
 					echo "<script>alert('Thay Đổi Thông Tin Thành Công');window.location.href='staff_info.php?id=".$user_id."';</script>";
@@ -84,17 +100,26 @@ else
 						<input type="text" class="form-control" disabled="disabled" value="<?php echo $row['user_name']; ?>">
 					</div>
 					<div class="form-group">
-						<label for="exampleInputEmail1">User Pass</label>
-						<input type="password" class="form-control" value="<?php echo $row['user_pass']; ?>">
+						<label for="exampleInputEmail1">Email</label>
+						<input type="text" class="form-control" disabled="disabled" value="<?php echo $row['email']; ?>">
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Lương Nhân Viên</label>
 						<input type="text"  name="luong" class="form-control" value="<?php echo $row['luong']; ?>">
 					</div>
 					<div class="form-group">
+						<label for="exampleInputEmail1">Số Ngày Nghỉ</label>
+						<input type="number"  name="day_leave" class="form-control" value="<?php echo $row['day_leave']; ?>">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail1">User Pass</label>
+						<input type="password" class="form-control" value="<?php echo $row['user_pass']; ?>">
+					</div>
+					<div class="form-group">
 						<label for="exampleInputEmail1">User New Pass</label>
 						<input type="password"  name="new_pass" class="form-control" value="">
 					</div>
+					
 					<div class="form-group">
 						<label for="exampleInputEmail1">User Confirm New Pass</label>
 						<input type="password"  name="confirm_new_pass" class="form-control" value="">
@@ -104,6 +129,7 @@ else
 					</div>
 					<div class="box-footer">
 						<td style="text-align:center" colspan="2"><input type="submit" class="btn btn-primary" name="update" value="Thay Đổi Thông Tin"></td>
+						<td style="text-align:center" colspan="2"><input type="submit" class="btn btn-primary" name="delete" value="Xoá Nhân Viên"></td>
 					</div>
 				</div>
 			</form>

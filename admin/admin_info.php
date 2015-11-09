@@ -130,6 +130,7 @@ if(@$_REQUEST['update'])
 					<div class="form-group">
 						<label>Họ Và Tên</label><input type="text" class="form-control"  name="name" value="<?php echo $row['name']; ?>">
 					</div>
+
 					<div class="form-group">
 						<label>Old Password</label><input type="password" class="form-control" name="user_oldpass" value="">
 					</div>

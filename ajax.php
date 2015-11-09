@@ -223,6 +223,7 @@ if($action == "staffmonthchange")
 						<td>Bắt Đầu</td>
 						<td>Kết Thúc</td>
 						<td>Giờ OT</td>
+						<th>Nghỉ Phép</th>
 						<td>Thao Tác</td>
 					</tr>';
 	for($i = 1;$i<=$end_loop;$i++)
@@ -276,6 +277,7 @@ if($action == "staffmonthchange")
 					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
 					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
 					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="checkbox" id="'.$i."-".$data.'_day_leave"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';
 				$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
@@ -292,6 +294,7 @@ if($action == "staffmonthchange")
 					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_start'])).'" id="'.$i."-".$data.'_timestart"></td>
 					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_end'])).'" id="'.$i."-".$data.'_timeend"></td>
 					<td><input type="text" class="timepicker2" value="'.date("H:i",strtotime($row['time_OT'])).'" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="checkbox" id="'.$i."-".$data.'_day_leave"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';
 				$total_time += strtotime($row['time_end']) - strtotime($row['time_start']) - 3600;
@@ -313,6 +316,7 @@ if($action == "staffmonthchange")
 					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
 					<td><input disabled="disabled" class="timepicker2" type="text" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
 					<td><input type="text" class="timepicker2" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="checkbox" id="'.$i."-".$data.'_day_leave"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';		
 			}
@@ -324,6 +328,7 @@ if($action == "staffmonthchange")
 					<td><input type="text" class="timepicker2" placeholder="08:00" id="'.$i."-".$data.'_timestart"></td>
 					<td><input type="text" class="timepicker2" placeholder="17:00" id="'.$i."-".$data.'_timeend"></td>
 					<td><input type="text" class="timepicker2" placeholder="1:00" id="'.$i."-".$data.'_timeOT"></td>
+					<td><input type="checkbox" id="'.$i."-".$data.'_day_leave"></td>
 					<td><input type="button" value="update" class="btn btn-primary"  onclick="return update_time('.$day_info1.",".$day_info2.','.$day_info3.','.$user_id.')"></td>
 				</tr>';		
 				$time_inmonth += 8;
@@ -348,7 +353,7 @@ if($action == "staffmonthchange")
 		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td><input name="send_confirm" disabled="disabled" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
+		<td colspan="2"><input name="send_confirm" disabled="disabled" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
 		</tr></table>';
 	}
 	else
@@ -358,7 +363,7 @@ if($action == "staffmonthchange")
 		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
 		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
 		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
+		<td colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
 		</tr></table>';
 	}
 	

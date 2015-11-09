@@ -47,12 +47,12 @@ a
 {
 	display:inline-block;
 }
-.reason_form ul li 
+.reason_form ul li ,.sendmail_form ul li
 {
 	display:inline-block;
 	padding:20px;
 }
-.reason_form ul li  textarea
+.reason_form ul li  textarea,.sendmail_form ul li textarea
 {
 	width:300px;
 	height:100px;
@@ -111,7 +111,11 @@ a
 {
 	display:none;
 }
-.login_form,.reason_form
+.sendmail_form
+{
+	display:none;
+}
+.login_form,.reason_form,.sendmail_form
 {
 	position:fixed;
 	top:200px;
