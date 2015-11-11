@@ -5,6 +5,7 @@ $username   = 'root';
 $password   = '';
 $database   = 'staff_manager';
 include '../PHPMailer/class.phpmailer.php';
+require("../PHPMailer/PHPMailerAutoload.php");
 $con = mysql_connect($host, $username, $password);
 mysql_select_db($database, $con);
 if(!isset($_SESSION)) 
@@ -20,19 +21,44 @@ if($action == "send_mail")
 	$user_id = $_REQUEST['user_id'];
 	$user_info = mysql_query("select * from user where id=".$user_id);
 	$row = mysql_fetch_array($user_info);
+	// $mail = new PHPMailer(); // defaults to using php "mail()"
+	// $mail->CharSet = 'UTF-8';
+	// $mail->SetFrom('baquevn17@gmail.com', 'First Last');
+	// $mail->AddAddress("baquevn17@gmail.com");
+	// $mail->Subject = "Thông Báo Từ Paditech";
+	// $mail->MsgHTML("Hâm");
+	
+	// //$mail->AddAttachment("../log/cong.xlsx");
+	// //$mail->AddAttachment("../log/tru.xlsx");
+	// if(!$mail->send()) {
+		// echo $mail->ErrorInfo;
+		// echo "Fail";
+	// } else {
+		// echo $mail->ErrorInfo;
+		// echo "OK";
+	// }
 	
 	$mail = new PHPMailer(); // defaults to using php "mail()"
+	$mail->isSMTP();                                      // set mailer to use SMTP
+	$mail->Host = "smtp.gmail.com";  // specify main and backup server
+	$mail->Port       = 25;  
+	$mail->SMTPAuth = true;     // turn on SMTP authentication
+	$mail->Username = "baquevn17@gmail.com";  // SMTP username
+	$mail->Password = "0934!@##@!"; // SMTP password
 	$mail->CharSet = 'UTF-8';
 	$mail->SetFrom('baquevn17@gmail.com', 'First Last');
 	$mail->addAddress($row['email']);
 	$mail->Subject = "Thông Báo Từ Paditech";
-	$mail->MsgHTML("Gửi ".$row['name']."<br>");
-	$mail->MsgHTML($reason);
+	$mail->Body    = "Gửi ".$row['name']."<br>";
+	$mail->AltBody = $reason;
 	if(!$mail->send()) {
+		echo $mail->ErrorInfo;
 		echo "Fail";
 	} else {
+		//echo $mail->ErrorInfo;
 		echo "OK";
 	}
+	
 }
 if($action == "update_staff")
 {
