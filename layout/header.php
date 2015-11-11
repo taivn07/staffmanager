@@ -12,7 +12,7 @@ if(!isset($_SESSION))
 { 
 	session_start(); 
 } 
-$check = @$_SESSION['id'];
+
 $check_link = explode("/",$_SERVER['SCRIPT_FILENAME']);
 $check_link = $check_link[count($check_link) - 1];
 if($check_link == "login.php")
@@ -31,21 +31,16 @@ if($check_link == "login.php")
 		</style>
 	<?php
 }
-if($check == "" &&  $check_link != "login.php")
-{
-	echo "<script>window.location.href='login.php';</script>";
-}
-else
-{
-	$check = "true";
-	
-}
+
+
 if(@$_REQUEST['action'] == "logout")
 {
 	session_destroy();
+	setcookie("user", "", time() - 3600);
+	setcookie("pass", "", time() - 3600);
+	setcookie("remember", "", time() - 3600);
 	echo "<script>window.location.href='login.php';</script>";
 }
-
 ?>
 <html>
 <head>
@@ -56,8 +51,14 @@ if(@$_REQUEST['action'] == "logout")
 <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
 <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
 
+
+
 <link rel="stylesheet" href="css/style.css">
 <script src='js/jquery-1.9.1.min.js'></script>
+
+<script src="https://code.jquery.com/jquery-2.1.4.js" type="text/javascript"></script>
+
+<script src="js/js-cookie-master/src/js.cookie.js" type="text/javascript"></script>
 
 <script src="plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script src="css/bootstrap/js/bootstrap.min.js"></script>
@@ -128,15 +129,7 @@ function update_noti1(id)
 			$("#label-success-header").text("Bạn Có "+count+" messages");
 			$("#label-success").text(count);
 			return false
-			// if(xmlhttp.responseText== "OK")
-			// {
-	
-				// return false;
-			// }
-			// else
-			// {
-				// return false;
-			// }
+
 		}
 	}
 	xmlhttp.open("GET","ajax.php?action=update_noti1&id="+id,true);
@@ -148,6 +141,30 @@ function close_popup()
 	$('.loading').hide();
 	
 }
+function check_login1(user,pass)
+{
+	if (window.XMLHttpRequest)
+	{// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+			if(xmlhttp.responseText== "FAIL")
+			{
+				window.location.href='login.php';
+			}
+		}
+	}
+	xmlhttp.open("GET","ajax.php?action=check_login&user="+user+"&pass="+pass,true);
+	xmlhttp.send();
+	
+}
 $(document).ready(function()
 {
 	var width = $(window).width();
@@ -155,8 +172,37 @@ $(document).ready(function()
 	$(".login_form").css("left",left);
 	
 	$(".reason_popup").css("left",left);
+
 });
 </script>
+<?php
+$remember = @$_COOKIE['remember'];
+$check = @$_SESSION['id'];
+if($remember == "true")
+{
+	
+	$user = $_COOKIE['user'];
+	$pass = md5($_COOKIE['pass']);
+	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
+	$row = mysql_fetch_array($check_login);
+	$_SESSION['id'] = $row['id'];
+}
+else
+{
+	if($check == "" &&  $check_link != "login.php" && $remember != "true")
+	{
+		echo "<script>window.location.href='login.php';</script>";
+	}
+	else
+	{
+		
+		$check = "true";
+		
+	}
+}
+
+
+?>
 <div class="loading"></div>
 <div class="reason_popup">
 	<p id="reason_popup"></p>

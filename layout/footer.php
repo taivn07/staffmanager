@@ -53,7 +53,7 @@ $('#datepicker1').Zebra_DatePicker({
 				}
 			}
 		}
-		xmlhttp.open("GET","ajax.php?action=staffmonthchange&data="+data+"&user_id="+user_id,true);
+		xmlhttp.open("GET","ajax.php?action=staffmonthchange&data="+data+"&staff_id="+staff_id,true);
 		xmlhttp.send();
 	}
 });

@@ -1,5 +1,6 @@
 <?php
 include("layout/header.php");
+
 $day = date("m-Y", strtotime(date("Y-m-d")));
 $endday =  date("t", strtotime(date("Y-m-d")));
 $startday =  date("Y-m-01", strtotime(date("Y-m-d")));
@@ -313,21 +314,21 @@ if($user_id != "")
 			if($num_rows_check_confirm > 0)
 			{
 				$output .='<tr>	
-					<td>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</td>
-					<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
-					<td>Lương Cơ Bản : '.$row2['luong'].'</td>
-					<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-					<td colspan="2"><input disabled="disabled" class="btn btn-danger" type="button" value="Gửi Báo Cáo"></td>
+					<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
+					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
+					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
+					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+					<th colspan="2"><input disabled="disabled" class="btn btn-danger" type="button" value="Gửi Báo Cáo"></th>
 				</tr></table>';
 			}	
 			else
 			{
 				$output .='<tr>	
-					<td>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</td>
-					<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
-					<td>Lương Cơ Bản : '.$row2['luong'].'</td>
-					<td><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-					<td colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
+					<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
+					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
+					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
+					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+					<th colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></th>
 				</tr></table>';
 			}
 			

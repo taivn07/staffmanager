@@ -76,7 +76,7 @@ if(@$_REQUEST['action'] == "logout")
 
 <link rel="stylesheet" href="../css/style.css">
 <script src='../js/jquery-1.9.1.min.js'></script>
-
+<script src="../js/jquery-cookie/src/jquery.cookie.js"></script>
 <script src="../plugins/jQuery/jQuery-2.1.4.min.js"></script>
 <script src="../css/bootstrap/js/bootstrap.min.js"></script>
 <script src="../plugins/fastclick/fastclick.js"></script>
@@ -137,6 +137,7 @@ $(document).ready(function()
 		<ul class="sidebar-menu">
 			<li class="treeview"><a href="index.php"><i class="fa fa-list-alt"></i><span>Danh Sách Nhân Viên</span></a></li>
 			<li class="treeview"><a href="staff_manager.php"><i class="fa fa-edit"></i><span>Xác Nhận Lương Hàng Tháng</span></a></li>
+			
 			<li class="treeview"><a href="add_admin.php"><i class="fa fa-user-plus"></i><span>Thêm Mới Admin</span></a></li>
 			<li class="treeview"><a href="add_staff.php"><i class="fa fa-user-plus"></i><span>Thêm Mới Nhân Viên</span></a></li>
 			

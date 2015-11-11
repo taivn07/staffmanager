@@ -16,6 +16,7 @@ if($action == "check_login")
 {
 	$user = $_REQUEST['user'];
 	$pass = md5($_REQUEST['pass']);
+	$remember = $_REQUEST['remember'];
 	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
 	$num_rows1 = @mysql_num_rows($check_login);	
 	if($num_rows1 > 0)
@@ -25,13 +26,28 @@ if($action == "check_login")
 		$_SESSION['id'] = $row['id'];  
 		if($row['status'] == 1)
 		{
-			echo "OK";
+			if($remember == 1)
+			{
+				echo "OK2";
+			}
+			else
+			{
+				echo "OK";
+			}
 		}
 		else
 		{
 			if($row['status'] == 2)
 			{
-				echo "OK1";
+				if($remember == 1)
+				{
+					echo "OK3";
+				}
+				else
+				{
+					echo "OK1";
+				}
+				
 			}
 			else
 			{
@@ -219,12 +235,12 @@ if($action == "staffmonthchange")
 					<input type="hidden" value="'.$_SESSION['id'].'" id="user_id" name="user_id">
 					<input type="hidden" value="'.$month_confirm1.'" id="month_confirm1" name="month_confirm1">
 					<tr>
-						<td>Ngày Làm Viêc</td>
-						<td>Bắt Đầu</td>
-						<td>Kết Thúc</td>
-						<td>Giờ OT</td>
+						<th>Ngày Làm Viêc</th>
+						<th>Bắt Đầu</th>
+						<th>Kết Thúc</th>
+						<th>Giờ OT</th>
 						<th>Nghỉ Phép</th>
-						<td>Thao Tác</td>
+						<th>Thao Tác</th>
 					</tr>';
 	for($i = 1;$i<=$end_loop;$i++)
 	{
@@ -349,21 +365,21 @@ if($action == "staffmonthchange")
 	if($num_rows_check_confirm > 0)
 	{
 		$output .='<tr>	
-		<td>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</td>
-		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
-		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
-		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td colspan="2"><input name="send_confirm" disabled="disabled" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
+			<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
+			<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
+			<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
+			<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+			<th colspan="2"><input disabled="disabled" class="btn btn-danger" type="button" value="Gửi Báo Cáo"></th>
 		</tr></table>';
-	}
+	}	
 	else
 	{
 		$output .='<tr>	
-		<td>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</td>
-		<td>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</td>
-		<td>Lương Cơ Bản : '.$row2['luong'].'</td>
-		<td>Lương Nhận Được : '.ceil($luong+$luongot).'</td>
-		<td colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></td>
+			<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
+			<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
+			<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
+			<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+			<th colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></th>
 		</tr></table>';
 	}
 	

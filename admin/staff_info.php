@@ -130,6 +130,7 @@ else
 					<div class="box-footer">
 						<td style="text-align:center" colspan="2"><input type="submit" class="btn btn-primary" name="update" value="Thay Đổi Thông Tin"></td>
 						<td style="text-align:center" colspan="2"><input type="submit" class="btn btn-primary" name="delete" value="Xoá Nhân Viên"></td>
+						<td style="text-align:center" colspan="2"><a href="staff_month_cal.php?staff_id=<?php echo $user_id; ?>"><input type="button" class="btn btn-primary" name="delete" value="Thông Tin Đi Làm"></a></td>
 					</div>
 				</div>
 			</form>

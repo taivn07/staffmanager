@@ -48,7 +48,7 @@ function send_mail(user_id)
 	$(".loading").show();
 	$('#reason_ok').attr("onclick","return send("+user_id+")");
 }
-function close()
+function close1()
 {
 	$(".sendmail_form").hide();
 	$(".loading").hide();
@@ -76,7 +76,7 @@ $(document).ready(function()
 			<input type="submit" onclick="return send()" id="reason_ok" name="reason_ok" value="Send">
 		</li>
 		<li>
-			<input type="submit" onclick="return close()" id="reason_cancel" name="reason_cancel" value="Cancel">
+			<input type="submit" onclick="return close1()" id="reason_cancel" name="reason_cancel" value="Cancel">
 		</li>
 	</ul>
 </div>
