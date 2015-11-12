@@ -107,6 +107,8 @@ if($action == "staffmonthchange")
 	$output .= '
 			<table class="table date_info_table table-bordered">
 					<tr>
+						<input type="hidden" value="'.$staff_id.'" id="user_id" name="user_id">
+						<input type="hidden" value="'.$month_confirm1.'" id="month_confirm1" name="month_confirm1">
 						<th>Ngày Làm Viêc</th>
 						<th>Bắt Đầu</th>
 						<th>Kết Thúc</th>
@@ -116,7 +118,7 @@ if($action == "staffmonthchange")
 					</tr>';
 	for($i = 1;$i<=$end_loop;$i++)
 	{
-		$startday = $startday =  date("Y-m-d", strtotime($i."-".$data));
+		$startday =  date("Y-m-d", strtotime($i."-".$data));
 		$day_info = explode("-",$i."-".$data);
 		$day_info1 = $day_info[0];
 		$day_info2 = $day_info[1];
@@ -241,7 +243,7 @@ if($action == "staffmonthchange")
 			<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 			<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
 			<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
-			
+			<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 		</tr></table>';
 	}	
 	else
@@ -251,7 +253,7 @@ if($action == "staffmonthchange")
 			<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 			<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
 			<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
-			
+			<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 		</tr></table>';
 	}
 	

@@ -186,6 +186,14 @@ if($remember == "true")
 	$check_login = mysql_query("select * from user where user_name='".$user."' AND user_pass='".$pass."'");
 	$row = mysql_fetch_array($check_login);
 	$_SESSION['id'] = $row['id'];
+	if($row['status'] == 1)
+	{
+		echo "<script>window.location.href='index.php';</script>";
+	}
+	else
+	{
+		echo "<script>window.location.href='admin/index.php';</script>";
+	}
 }
 else
 {

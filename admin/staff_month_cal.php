@@ -1,6 +1,7 @@
 <?php
 include("layout/header.php");
-
+include '../PHPExcel/IOFactory.php';
+include '../PHPExcel.php';
 $day = date("m-Y", strtotime(date("Y-m-d")));
 $endday =  date("t", strtotime(date("Y-m-d")));
 $startday =  date("Y-m-01", strtotime(date("Y-m-d")));
@@ -13,15 +14,12 @@ $sql1 = "select * from user where id=".$staff_id;
 $get_user = mysql_query($sql1);
 $row2 = mysql_fetch_array($get_user);
 
-?>
-
-<?php
 if($staff_id != "")
 {	
 ?>
 <div class="content-wrapper" style="min-height: 916px;">
 	<section class="content-header">
-	<h1>Đăng Ký Giờ Làm</h1>
+	<h1>Thông Tin Làm Việc</h1>
 	</section>
 	<div class="content">
 		
@@ -34,12 +32,12 @@ if($staff_id != "")
 					</form>
 				</form>
 			</div>
-			<form id="statistical" >
+			<form id="statistical" method="post" action="download_excel.php" >
 			<?php
 			$month_confirm1 = date("Y-m-d", strtotime("01-".$day));
 			$output .= '<table class="date_info_table table table-bordered">
 					<tr>
-						<input type="hidden" value="'.$_SESSION['id'].'" id="user_id" name="user_id">
+						<input type="hidden" value="'.$staff_id.'" id="user_id" name="user_id">
 						<input type="hidden" value="'.$month_confirm1.'" id="month_confirm1" name="month_confirm1">
 						<th>Ngày Làm Viêc</th>
 						<th>Bắt Đầu</th>
@@ -196,7 +194,7 @@ if($staff_id != "")
 					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
 					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
-					
+					<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 				</tr></table>';
 			}	
 			else
@@ -206,7 +204,7 @@ if($staff_id != "")
 					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
 					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
-					
+					<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 				</tr></table>';
 			}
 			
