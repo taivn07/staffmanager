@@ -36,9 +36,12 @@ if($check_link == "login.php")
 if(@$_REQUEST['action'] == "logout")
 {
 	session_destroy();
-	setcookie("user", "", time() - 3600);
-	setcookie("pass", "", time() - 3600);
-	setcookie("remember", "", time() - 3600);
+	unset($_COOKIE['user']);
+    unset($_COOKIE['pass']);
+	unset($_COOKIE['remember']);
+	setcookie('user', null, -1, '/');
+    setcookie('pass', null, -1, '/');
+	setcookie('remember', null, -1, '/');
 	echo "<script>window.location.href='login.php';</script>";
 }
 ?>
@@ -188,7 +191,14 @@ if($remember == "true")
 	$_SESSION['id'] = $row['id'];
 	if($row['status'] == 1)
 	{
-		echo "<script>window.location.href='index.php';</script>";
+		if($check == "" &&  $check_link != "login.php" && $remember != "true")
+		{
+			echo "<script>window.location.href='login.php';</script>";
+		}
+		else
+		{	
+			$check = "true";
+		}
 	}
 	else
 	{
@@ -202,10 +212,8 @@ else
 		echo "<script>window.location.href='login.php';</script>";
 	}
 	else
-	{
-		
+	{	
 		$check = "true";
-		
 	}
 }
 

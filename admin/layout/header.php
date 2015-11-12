@@ -50,6 +50,7 @@ if($check == "" &&  $check_link != "index.php")
 	{
 		$new_link = "/";
 	}
+	
 	echo "<script>window.location.href='http://" . $_SERVER['SERVER_NAME'] .$new_link."';</script>";
 }
 else
@@ -60,7 +61,28 @@ else
 if(@$_REQUEST['action'] == "logout")
 {
 	session_destroy();
-	echo "<script>window.location.href='index.php';</script>";
+	unset($_COOKIE['user']);
+    unset($_COOKIE['pass']);
+	unset($_COOKIE['remember']);
+	setcookie('user', null, -1, '/');
+    setcookie('pass', null, -1, '/');
+	setcookie('remember', null, -1, '/');
+	// setcookie("user", null, time() - 3600);
+	// setcookie("pass", null, time() - 3600);
+	// setcookie("remember", null, time() - 3600);
+
+	$link = $_SERVER['REQUEST_URI'];
+	$link = explode("admin",$link);
+	if($link[0] == "/staff_manager/")
+	{
+		$new_link = "/staff_manager/";
+	}
+	else
+	{
+		$new_link = "/";
+	}
+	echo "<script>window.location.href='http://" . $_SERVER['SERVER_NAME'] .$new_link."';</script>";
+	//echo "<script>window.location.href='index.php';</script>";
 }
 
 
@@ -117,6 +139,7 @@ $(document).ready(function()
 <aside class="main-sidebar">
 	<section class="sidebar">
 		<div class="user-panel">
+				
 			<?php
 			if(@$_SESSION['id'] != "")
 			{
