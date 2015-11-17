@@ -211,7 +211,7 @@ if($user_id != "")
 				$num_rows = @mysql_num_rows($get_cal);	
 				if($num_rows > 0)
 				{
-					
+					$row = mysql_fetch_array($get_cal);
 					if($dayname == 6 || $dayname == 7)
 					{
 						$output .='
@@ -230,7 +230,7 @@ if($user_id != "")
 					}
 					else
 					{
-						$row = mysql_fetch_array($get_cal);
+						
 						if($row['is_day_leave'] == 1)
 						{
 							$output .='
