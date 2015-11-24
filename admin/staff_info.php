@@ -28,7 +28,7 @@ if($num_rows1 > 0)
 		$user_id =$_REQUEST['user_id'];
 		$ten =$_REQUEST['ten'];
 		$luong =$_REQUEST['luong'];
-		$new_pass = @md5($_REQUEST['new_pass']);
+		$new_pass = $_REQUEST['new_pass'];
 		$confirm_new_pass = @md5($_REQUEST['confirm_new_pass']);
 		$block = @$_REQUEST['block'];
 		$day_leave = $_REQUEST['day_leave'];
@@ -42,6 +42,7 @@ if($num_rows1 > 0)
 		}
 		if($new_pass == "")
 		{
+			
 			$check = mysql_query("update user set name='".$ten."',luong='".$luong."',status='".$block."',day_leave='".$day_leave."' where id=".$user_id);
 			if($check == TRUE)
 			{
@@ -54,6 +55,7 @@ if($num_rows1 > 0)
 		}
 		else
 		{
+			$new_pass = md5($_REQUEST['new_pass']);
 			if($new_pass != $confirm_new_pass)
 			{
 				echo "<script>alert('Mật Khẩu Nhập Lại Không Đúng');window.location.href='staff_info.php?id=".$user_id."';</script>";

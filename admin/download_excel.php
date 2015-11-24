@@ -17,6 +17,7 @@ if(@$_REQUEST['user_id'])
 	$data = date("m-Y",strtotime($month_confirm1));
 	$end_loop = date("t", strtotime($month_confirm1));
 	$month_confirm = date("Y-m", strtotime($month_confirm1));
+	
 	$sql1 = "select * from user where id=".$user_id;
 	$get_user = mysql_query($sql1);
 	$row2 = mysql_fetch_array($get_user);
@@ -157,10 +158,25 @@ if(@$_REQUEST['user_id'])
 	$luongot = ($luongtb*1.5)*floor($total_ot/60)+($luongtb*1.5/60)*floor($total_ot%60);
 	$luong = $luongtb*floor($total_time/60) + ($luongtb/60)*($total_time%60);
 	
-	$objPHPExcel->setActiveSheetIndex(0)
+	$results1 = mysql_query("select * from month_confirm where user_id='".$user_id."' and month_accept = '".$month_confirm1."'");
+	
+	$num_rows1 = @mysql_num_rows($results1);	
+	if($num_rows1 > 0)
+	{
+		$row1 = mysql_fetch_array($results1);	
+		$objPHPExcel->setActiveSheetIndex(0)
+					->setCellValue('A'.$arrayCount1, "Tổng Thời Gian Làm : ".sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth)
+					->setCellValue('B'.$arrayCount1, "Tổng Thời Gian OT : ".sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60))
+					->setCellValue('C'.$arrayCount1, "Lương Nhận Được : ".substr(number_format($row1['luong_inmonth'],2),0,-3));
+	}
+	else
+	{
+		$objPHPExcel->setActiveSheetIndex(0)
 					->setCellValue('A'.$arrayCount1, "Tổng Thời Gian Làm : ".sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth)
 					->setCellValue('B'.$arrayCount1, "Tổng Thời Gian OT : ".sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60))
 					->setCellValue('C'.$arrayCount1, "Lương Nhận Được : ".substr(number_format(ceil($luong+$luongot),2),0,-3));
+	}
+	
 	$objPHPExcel->getActiveSheet()->getStyle('A'.$arrayCount1)->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('B'.$arrayCount1)->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->getStyle('C'.$arrayCount1)->getFont()->setBold(true);

@@ -317,7 +317,7 @@ if($user_id != "")
 					<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
 					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
-					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+					<th><input type="hidden" value="'.$row2['luong_inmonth'].'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format($row2['luong_inmonth'],2),0,-3).'</th>
 					<th colspan="2"><input disabled="disabled" class="btn btn-danger" type="button" value="Gửi Báo Cáo"></th>
 				</tr></table>';
 			}	

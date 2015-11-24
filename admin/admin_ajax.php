@@ -5,7 +5,8 @@ $username   = 'root';
 $password   = '';
 $database   = 'staff_manager';
 include '../PHPMailer/class.phpmailer.php';
-require("../PHPMailer/PHPMailerAutoload.php");
+//require("../PHPMailer/PHPMailerAutoload.php");
+require '../PHPMailer-master/PHPMailerAutoload.php';
 $con = mysql_connect($host, $username, $password);
 mysql_select_db($database, $con);
 if(!isset($_SESSION)) 
@@ -21,6 +22,22 @@ if($action == "send_mail")
 	$user_id = $_REQUEST['user_id'];
 	$user_info = mysql_query("select * from user where id=".$user_id);
 	$row = mysql_fetch_array($user_info);
+	
+	$mail = new PHPMailer;
+	$mail->isSMTP();     
+	$mail->SMTPDebug = 2;	// Set mailer to use SMTP
+	$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+	$mail->SMTPAuth = true;                               // Enable SMTP authentication
+	$mail->Username = 'baquevn17@gmail.com';                 // SMTP username
+	$mail->Password = '0934!@##@!';                           // SMTP password
+	$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
+	$mail->Port = 465;
+	$mail->setFrom('baquevn17@gmail.com', 'Mailer');
+	$mail->addAddress('baquevn17@gmail.com', 'Joe User');    
+	$mail->Subject = 'Here is the subject';
+	$mail->Body    = 'This is the HTML message body <b>in bold!</b>';
+	$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+	
 	// $mail = new PHPMailer(); // defaults to using php "mail()"
 	// $mail->CharSet = 'UTF-8';
 	// $mail->SetFrom('baquevn17@gmail.com', 'First Last');
@@ -38,19 +55,19 @@ if($action == "send_mail")
 		// echo "OK";
 	// }
 	
-	$mail = new PHPMailer(); // defaults to using php "mail()"
-	$mail->isSMTP();                                      // set mailer to use SMTP
-	$mail->Host = "smtp.gmail.com";  // specify main and backup server
-	$mail->Port       = 25;  
-	$mail->SMTPAuth = true;     // turn on SMTP authentication
-	$mail->Username = "baquevn17@gmail.com";  // SMTP username
-	$mail->Password = "0934!@##@!"; // SMTP password
-	$mail->CharSet = 'UTF-8';
-	$mail->SetFrom('baquevn17@gmail.com', 'First Last');
-	$mail->addAddress($row['email']);
-	$mail->Subject = "Thông Báo Từ Paditech";
-	$mail->Body    = "Gửi ".$row['name']."<br>";
-	$mail->AltBody = $reason;
+	// $mail = new PHPMailer(); // defaults to using php "mail()"
+	// $mail->isSMTP();                                      // set mailer to use SMTP
+	// $mail->Host = "smtp.gmail.com";  // specify main and backup server
+	// $mail->Port       = 25;  
+	// $mail->SMTPAuth = true;     // turn on SMTP authentication
+	// $mail->Username = "baquevn17@gmail.com";  // SMTP username
+	// $mail->Password = "0934!@##@!"; // SMTP password
+	// $mail->CharSet = 'UTF-8';
+	// $mail->SetFrom('baquevn17@gmail.com', 'First Last');
+	// $mail->addAddress($row['email']);
+	// $mail->Subject = "Thông Báo Từ Paditech";
+	// $mail->Body    = "Gửi ".$row['name']."<br>";
+	// $mail->AltBody = $reason;
 	if(!$mail->send()) {
 		echo $mail->ErrorInfo;
 		echo "Fail";
@@ -238,11 +255,12 @@ if($action == "staffmonthchange")
 	$num_rows_check_confirm = mysql_num_rows($check_confirm);	
 	if($num_rows_check_confirm > 0)
 	{
+		$row3 = mysql_fetch_array($check_confirm);
 		$output .='<tr>	
 			<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
 			<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 			<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
-			<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+			<th><input type="hidden" value="'.$row3['luong_inmonth'].'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format($row3['luong_inmonth'],2),0,-3).'</th>
 			<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 		</tr></table>';
 	}	

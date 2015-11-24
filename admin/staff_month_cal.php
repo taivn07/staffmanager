@@ -87,7 +87,7 @@ if($staff_id != "")
 				$num_rows = @mysql_num_rows($get_cal);	
 				if($num_rows > 0)
 				{
-					
+					$row = mysql_fetch_array($get_cal);
 					if($dayname == 6 || $dayname == 7)
 					{
 						$output .='
@@ -189,11 +189,12 @@ if($staff_id != "")
 			$num_rows_check_confirm = mysql_num_rows($check_confirm);	
 			if($num_rows_check_confirm > 0)
 			{
+				$row3 = mysql_fetch_array($check_confirm);
 				$output .='<tr>	
 					<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
 					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
-					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+					<th><input type="hidden" value="'.$row3['luong_inmonth'].'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format($row3['luong_inmonth'],2),0,-3).'</th>
 					<th><input name="send_confirm" class="btn btn-danger" type="submit" value="In Báo Cáo"></th>
 				</tr></table>';
 			}	
