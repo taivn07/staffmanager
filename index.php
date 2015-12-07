@@ -17,15 +17,22 @@ if(@$_REQUEST['send_confirm'])
 	$user_id = $_REQUEST['user_id'];
 	$month = $_REQUEST['month_confirm1'];
 	$luong_inmonth = $_REQUEST['luong_inmonth'];
-	$results = mysql_query("insert into month_confirm(month_accept,user_id,status,luong_inmonth) values('".$month."','".$user_id."',1,'".$luong_inmonth."')");
-	if($results == TRUE)
+	$sql_check = mysql_query("select * from month_confirm where month_accept = '".$month."' and user_id=".$user_id." and (status = 1 or status = 0)");
+	$num_check = @mysql_num_rows($sql_check);	
+	if($num_check == 0)
 	{
-		echo "<script>alert('gửi báo cáo thành công');window.location.href='index.php';</script>";
+		$results = mysql_query("insert into month_confirm(month_accept,user_id,status,luong_inmonth) values('".$month."','".$user_id."',1,'".$luong_inmonth."')");
+		if($results == TRUE)
+		{
+			echo "<script>alert('gửi báo cáo thành công');window.location.href='index.php';</script>";
+		}
+		else
+		{
+			echo "<script>alert('gửi báo cáo thất bại');window.location.href='index.php';</script>";
+		}
 	}
-	else
-	{
-		echo "<script>alert('gửi báo cáo thất bại');window.location.href='index.php';</script>";
-	}
+	
+	
 }
 ?>
 <script>
