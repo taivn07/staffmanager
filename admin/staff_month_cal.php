@@ -106,7 +106,6 @@ if($staff_id != "")
 					}
 					else
 					{
-						$row = mysql_fetch_array($get_cal);
 						if($row['is_day_leave'] == 1)
 						{
 							$output .='
