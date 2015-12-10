@@ -138,7 +138,7 @@ $(document).ready(function()
 						<tr>
 						<td><a href="staff_month_info.php?month_accept=<?php echo date("m-Y",strtotime($row['month_accept'])); ?>&user_id=<?php echo $row['user_id']; ?>&month_confirm_id=<?php echo $row['month_confirm_id']; ?>"><?php echo date("m-Y",strtotime($row['month_accept'])); ?></a></td>
 						<td><?php echo $row['name']; ?></td>
-						<td><?php echo $row['luong']; ?></td>
+						<td><?php echo substr(number_format(ceil($row['luong']),2),0,-3); ?></td>
 						<?php
 							$endday =  date("Y-m-t", strtotime($row['month_accept']));
 							$startday =  date("Y-m-01", strtotime($row['month_accept']));
@@ -160,7 +160,7 @@ $(document).ready(function()
 						?>
 						<td><?php echo $daywork;?></td>
 						<td><?php echo sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60);?></td>
-						<td><?php echo $row['luong_inmonth'] ?></td>
+						<td><?php echo substr(number_format(ceil($row['luong_inmonth']),2),0,-3); ?></td>
 						<td><input type="button" value="Update" onclick="return update_staff(<?php echo date("m",strtotime($row['month_accept'])).",".date("Y",strtotime($row['month_accept'])).",".$row['id']; ?>)">
 						<input type="button" value="Cacel" onclick="return cancel_staff(<?php echo date("m",strtotime($row['month_accept'])).",".date("Y",strtotime($row['month_accept'])).",".$row['id']; ?>)">
 						</td>

@@ -102,7 +102,7 @@ $(document).ready(function()
 							<td><a href="staff_info.php?id=<?php echo $row['id'] ?>"><?php echo $row['id'] ?></a></td>
 							<td><?php echo $row['name'] ?></td>
 							<td><?php echo $row['user_name'] ?></td>
-							<td><?php echo $row['luong'] ?></td>
+							<td><?php echo substr(number_format(ceil($row['luong']),2),0,-3); ?></td>
 							<td style="width:30px">
 							<?php
 								if($row['status'] == 1)

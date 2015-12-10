@@ -107,7 +107,7 @@ else
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Lương Nhân Viên</label>
-						<input type="text"  name="luong" class="form-control" value="<?php echo $row['luong']; ?>">
+						<input type="text"  name="luong" class="form-control" value="<?php echo substr(number_format(ceil($row['luong']),2),0,-3); ?>">
 					</div>
 					<div class="form-group">
 						<label for="exampleInputEmail1">Số Ngày Nghỉ</label>

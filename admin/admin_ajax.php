@@ -82,15 +82,34 @@ if($action == "update_staff")
 	$time_accept = date('Y-m-d H:i:s');	
 	$month_accept = $_REQUEST['date'];
 	$user_id = $_REQUEST['user_id'];
-	$results = mysql_query("update month_confirm set status=0,is_view=1,time_accept='".$time_accept."' where month_accept='".$month_accept."' and user_id=".$user_id);
-	if($results == true)
+	$check = mysql_query("select * from month_confirm where month_accept='".$month_accept."' and user_id=".$user_id);
+	$num_rows = @mysql_num_rows($check);	
+	if($num_rows > 0)
 	{
-		echo "OK";
+		$row1 = mysql_fetch_array($check);
+		$results = mysql_query("update month_confirm set status=0,is_view=1,time_accept='".$time_accept."' where id='".$row1['id']."'");
+		if($results == true)
+		{
+			echo "OK";
+		}
+		else
+		{
+			echo "Fail";
+		}
 	}
 	else
 	{
-		echo "Fail";
+		$results = mysql_query("update month_confirm set status=0,is_view=1,time_accept='".$time_accept."' where month_accept='".$month_accept."' and user_id=".$user_id);
+		if($results == true)
+		{
+			echo "OK";
+		}
+		else
+		{
+			echo "Fail";
+		}
 	}
+	
 }
 if($action == "cancel_staff")
 {
