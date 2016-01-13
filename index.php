@@ -39,8 +39,7 @@ if(@$_REQUEST['send_confirm'])
 
 function update_time(day,month,year,user_id)
 {
-	
-	var info = day+"-"+month+"-"+year;
+	var info = n(day)+"-"+n(month)+"-"+year;
 	if (document.getElementById(info+"_day_leave").checked) {
 		var timestart_val = "8:00";
 		var timeend_val = "17:00";
@@ -56,6 +55,7 @@ function update_time(day,month,year,user_id)
 		{
 			if (xmlhttp.readyState==4 && xmlhttp.status==200)
 			{
+
 				if(xmlhttp.responseText== "OK")
 				{
 					alert("Update thành công");
@@ -143,6 +143,10 @@ function update_time(day,month,year,user_id)
 	
 }
 
+function n(n){
+    return n > 9 ? "" + n: "0" + n;
+}
+
 </script>
 <?php
 if($user_id != "")
@@ -179,6 +183,7 @@ if($user_id != "")
 					</tr>';
 			for($i = 1; $i <$endday; $i++)
 			{
+                $i = sprintf('%02s', $i);
 				$startday  =  date("Y-m-d", strtotime($i."-".$day));
 				$day_info = explode("-",$i."-".$day);
 				$day_info1 = $day_info[0];
