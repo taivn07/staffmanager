@@ -337,11 +337,20 @@ if($user_id != "")
 			}	
 			else
 			{
-				$output .='<tr>	
+                /*
+				$output .='<tr>
 					<th>Tổng Thời Gian Làm : '.sprintf("%02dh %02dm", floor($total_time/60), $total_time%60).'/'.$time_inmonth.'h</th>
 					<th>Tổng Thời Gian OT : '.sprintf("%02dh %02dm", floor($total_ot/60), $total_ot%60).'</th>
 					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
 					<th><input type="hidden" value="'.ceil($luong+$luongot).'" name="luong_inmonth">Lương Nhận Được : '.substr(number_format(ceil($luong+$luongot),2),0,-3).'</th>
+					<th colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></th>
+				</tr></table>';
+                */
+                $output .='<tr>
+					<th></th>
+					<th></th>
+					<th>Lương Cơ Bản : '.substr(number_format(ceil($row2['luong']),2),0,-3).'</th>
+					<th></th>
 					<th colspan="2"><input name="send_confirm" class="btn btn-danger" type="submit" value="Gửi Báo Cáo"></th>
 				</tr></table>';
 			}
