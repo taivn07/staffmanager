@@ -243,6 +243,7 @@ if($action == "staffmonthchange")
 					</tr>';
 	for($i = 1;$i<=$end_loop;$i++)
 	{
+        $i = sprintf('%02s', $i);
 		$startday = $startday =  date("Y-m-d", strtotime($i."-".$data));
 		$day_info = explode("-",$i."-".$data);
 		$day_info1 = $day_info[0];
