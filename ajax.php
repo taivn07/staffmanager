@@ -237,7 +237,7 @@ if($action == "staffmonthchange")
 						<th>Ngày Làm Viêc</th>
 						<th>Bắt Đầu</th>
 						<th>Kết Thúc</th>
-						<th>Giờ OT</th>
+						<th>Giờ OT (<=8)</th>
 						<th>Nghỉ Phép</th>
 						<th>Thao Tác</th>
 					</tr>';
